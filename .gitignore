@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Build & Distribution Packaging
+*.deb
+kanban-notes-desktop_*/
+dist/
+build/
+*.egg-info/
+*.spec
+
+# Local Database & User State Data
+*.db
+*.sqlite
+*.sqlite3
+kanban_notes.db
+kanban_notes.json
+
+# IDEs & OS System Files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.tmp
+*.log

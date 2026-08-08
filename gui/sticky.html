@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desktop Sticky Note</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+    body {
+      background: #252526;
+      color: #d4d4d4;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      overflow: hidden;
+      user-select: none;
+      border: 1px solid #007acc;
+    }
+    .sticky-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #3c3c3c;
+    }
+    .sticky-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffffff;
+      outline: none;
+      border: none;
+      background: transparent;
+      width: 100%;
+    }
+    .sticky-actions {
+      display: flex;
+      gap: 4px;
+    }
+    .icon-btn {
+      background: transparent;
+      border: none;
+      color: #858585;
+      cursor: pointer;
+      padding: 2px 4px;
+      font-size: 0.8rem;
+    }
+    .icon-btn:hover { color: #ffffff; }
+    .sticky-content {
+      flex: 1;
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #cccccc;
+      font-size: 0.82rem;
+      resize: none;
+      outline: none;
+      line-height: 1.4;
+    }
+    .sticky-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 6px;
+      font-size: 0.68rem;
+      color: #858585;
+      border-top: 1px solid #2d2d2d;
+    }
+  </style>
+</head>
+<body>
+  <div class="sticky-header">
+    <input type="text" id="stickyTitle" class="sticky-title" placeholder="Judul Catatan Floating..." value="Catatan Desktop">
+    <div class="sticky-actions">
+      <button class="icon-btn" id="btnSaveSticky" title="Simpan Catatan"><i class="fa-solid fa-floppy-disk"></i></button>
+    </div>
+  </div>
+  <textarea id="stickyContent" class="sticky-content" placeholder="Tulis catatan cepat di desktop..."></textarea>
+  <div class="sticky-footer">
+    <span id="stickyStatus">📌 Floating Desktop Note</span>
+    <span id="stickyTime">Tersimpan</span>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const noteId = urlParams.get('id');
+
+    const titleEl = document.getElementById('stickyTitle');
+    const contentEl = document.getElementById('stickyContent');
+    const statusEl = document.getElementById('stickyTime');
+
+    async function loadStickyNote() {
+      if (!noteId) return;
+      try {
+        const resp = await fetch('/api/notes');
+        const notes = await resp.json();
+        const note = notes.find(n => n.id === noteId);
+        if (note) {
+          titleEl.value = note.title;
+          contentEl.value = note.content || '';
+        }
+      } catch(e) { console.error(e); }
+    }
+
+    async function saveStickyNote() {
+      if (!noteId) return;
+      try {
+        const resp = await fetch('/api/notes');
+        let notes = await resp.json();
+        const note = notes.find(n => n.id === noteId);
+        if (note) {
+          note.title = titleEl.value;
+          note.content = contentEl.value;
+          await fetch('/api/notes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(notes)
+          });
+          statusEl.textContent = 'Tersimpan ✓';
+          setTimeout(() => { statusEl.textContent = 'Auto Save'; }, 2000);
+        }
+      } catch(e) { console.error(e); }
+    }
+
+    titleEl.addEventListener('input', saveStickyNote);
+    contentEl.addEventListener('input', saveStickyNote);
+    document.getElementById('btnSaveSticky').addEventListener('click', saveStickyNote);
+
+    loadStickyNote();
+  </script>
+</body>
+</html>

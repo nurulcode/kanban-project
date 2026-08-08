@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Notes Desktop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 Icon Font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header Area -->
+    <header class="app-header">
+      <div class="brand">
+        <img src="logo.png" alt="Kanban Notes Logo" class="brand-logo-img">
+        <div>
+          <h1>Kanban Notes</h1>
+          <p class="subtitle">Aplikasi Catatan Desktop Ringan</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <button id="btnOpenWorkspaceModal" class="btn btn-secondary workspace-btn" title="Kelola & Pilih Ruang Kerja">
+          <i class="fa-solid fa-briefcase" style="color: #61afef;"></i>
+          <span id="currentWorkspaceName">Ruang Kerja Utama</span>
+          <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem;"></i>
+        </button>
+
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Cari catatan..." />
+        </div>
+
+        <select id="filterPriority" class="filter-select">
+          <option value="all">Semua Prioritas</option>
+          <option value="urgent">Urgent</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+
+        <button id="btnAddColumn" class="btn btn-secondary" title="Tambah Kolom Kustom Baru">
+          <i class="fa-solid fa-square-plus"></i> Kolom
+        </button>
+
+        <!-- Dropdown Menu Options -->
+        <div class="dropdown-menu-wrapper" id="moreMenuWrapper">
+          <button id="btnMoreMenu" class="btn btn-secondary" title="Menu & Pengaturan Lainnya">
+            <i class="fa-solid fa-ellipsis-vertical"></i> Menu
+          </button>
+          <div class="dropdown-menu-content" id="moreMenuContent">
+            <button id="btnThemeToggle" class="dropdown-item" title="Ganti Tema">
+              <i class="fa-solid fa-moon" id="themeIcon"></i> <span>Ganti Tema</span>
+            </button>
+            <button id="btnFocusMode" class="dropdown-item" title="Toggle Mode Fokus">
+              <i class="fa-solid fa-bullseye"></i> <span>Mode Fokus</span>
+            </button>
+            <button id="btnAutostart" class="dropdown-item" title="Autostart Saat Booting">
+              <i class="fa-solid fa-power-off"></i> <span>Autostart</span>
+            </button>
+            <button id="btnExportMd" class="dropdown-item" title="Export Catatan (.md)">
+              <i class="fa-solid fa-file-export"></i> <span>Export (.md)</span>
+            </button>
+            <button id="btnAbout" class="dropdown-item" title="Tentang Aplikasi">
+              <i class="fa-solid fa-circle-info"></i> <span>Tentang Info</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="btnNewNote" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> Tambah Catatan
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats & Pomodoro Bar -->
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-pill"><span class="stat-num" id="totalCount">0</span> Total</div>
+      <div class="stat-pill stat-progress-pill"><span class="stat-num" id="progressPercent">0%</span> Selesai</div>
+
+      <div class="stat-pill stat-focus-pill" id="btnShowPomoHistory" style="cursor: pointer;"
+        title="Klik untuk lihat Riwayat & Stat Fokus">
+        <i class="fa-solid fa-fire" style="color:#e5c07b;"></i> Fokus: <span class="stat-num"
+          id="totalFocusText">0m</span>
+      </div>
+      <div class="stat-pill stat-break-pill" id="btnShowBreakHistory" style="cursor: pointer;"
+        title="Klik untuk lihat Riwayat & Stat Fokus">
+        <i class="fa-solid fa-mug-hot" style="color:#98c379;"></i> Istirahat: <span class="stat-num"
+          id="totalBreakText">0m</span>
+      </div>
+
+      <!-- Pomodoro Timer Widget -->
+      <div class="pomodoro-pill">
+        <i class="fa-solid fa-clock pomo-icon"></i>
+        <select id="pomoDurationSelect" class="pomo-duration-select" title="Pilih Durasi Waktu Fokus">
+          <option value="5">5m</option>
+          <option value="10">10m</option>
+          <option value="20">20m</option>
+          <option value="25" selected>25m</option>
+        </select>
+        <span id="pomoTimer" class="pomo-timer">25:00</span>
+        <span class="pomo-badge" id="pomoBadge">🍅 Fokus</span>
+        <div class="pomo-actions">
+          <button id="btnPomoStart" class="pomo-action-btn" title="Mulai / Pause"><i
+              class="fa-solid fa-play"></i></button>
+          <button id="btnPomoReset" class="pomo-action-btn" title="Reset"><i
+              class="fa-solid fa-rotate-left"></i></button>
+          <button id="btnPomoMode" class="pomo-action-btn" title="Ubah Mode (Fokus/Istirahat)"><i
+              class="fa-solid fa-mug-hot"></i></button>
+          <button id="btnPomoHistory" class="pomo-action-btn" title="Riwayat & Stat Fokus"><i
+              class="fa-solid fa-chart-pie"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Board Area -->
+    <main class="kanban-board" id="kanbanBoard"></main>
+  </div>
+
+  <!-- Modal Form -->
+  <div class="modal-overlay" id="noteModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">Tambah Catatan Baru</h3>
+        <button class="btn-close" id="btnCloseModal">&times;</button>
+      </div>
+      <form id="noteForm">
+        <input type="hidden" id="noteId">
+
+        <div class="form-group">
+          <label for="inputTitle">Judul Catatan</label>
+          <input type="text" id="inputTitle" placeholder="Misal: Selesaikan laporan mingguan" required>
+        </div>
+
+        <div class="form-group">
+          <label for="inputContent">Isi Catatan / Detail</label>
+          <textarea id="inputContent" rows="4" placeholder="Tulis detail catatan di sini..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputColumn">Status Kolom</label>
+            <select id="inputColumn">
+              <option value="todo">To Do</option>
+              <option value="in_progress">In Progress</option>
+              <option value="review">Review</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="inputPriority">Prioritas</label>
+            <select id="inputPriority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputTag">Tag / Kategori</label>
+          <input type="text" id="inputTag" placeholder="Misal: Pekerjaan, Pribadi, Project">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btnCancelModal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Catatan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 id="detailTitle" style="font-size: 1.1rem; color: #ffffff; word-break: break-word;">Detail Catatan</h3>
+        <button class="btn-close" id="btnCloseDetailModal">&times;</button>
+      </div>
+      <div class="detail-body" style="padding: 12px 0;">
+        <div class="detail-meta"
+          style="display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap;">
+          <span class="card-prio" id="detailPrio">Medium</span>
+          <span class="card-tag" id="detailTag">#Umum</span>
+          <span class="detail-date" id="detailDate"
+            style="font-size: 0.75rem; color: #858585; margin-left: auto;"></span>
+        </div>
+        <div class="detail-content" id="detailContent"
+          style="background: #1e1e1e; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-size: 0.9rem; color: #d4d4d4; white-space: pre-wrap; word-break: break-word; min-height: 80px; max-height: 300px; overflow-y: auto;">
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 14px;">
+        <button type="button" class="btn btn-secondary" id="btnDetailClose">Tutup</button>
+        <button type="button" class="btn btn-primary" id="btnDetailEdit"><i class="fa-solid fa-pen-to-square"></i> Edit
+          Catatan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Alert Waktu Fokus Selesai -->
+  <div class="modal-overlay" id="pomoAlertModal">
+    <div class="modal-card pomo-alert-card">
+      <div class="pomo-alert-header">
+        <i class="fa-solid fa-bell pomo-alert-icon"></i>
+        <h3 id="pomoAlertTitle">⏰ Waktu Fokus Selesai!</h3>
+      </div>
+      <p id="pomoAlertMessage" class="pomo-alert-msg">Kerja bagus! Sesi fokus Anda telah berakhir. Apakah Anda ingin
+        langsung lanjut ke sesi berikutnya atau istirahat?</p>
+      <div class="modal-actions pomo-alert-actions">
+        <button id="btnPomoStop" class="btn btn-secondary">Istirahat Dulu ☕</button>
+        <button id="btnPomoContinue" class="btn btn-primary">Lanjut Fokus Lagi 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Riwayat & Statistik Fokus -->
+  <div class="modal-overlay" id="pomoHistoryModal">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-chart-pie"></i> Riwayat & Statistik Waktu Fokus</h3>
+        <button class="btn-close" id="btnClosePomoHistoryModal">&times;</button>
+      </div>
+      <div style="padding: 10px 0;">
+        <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+          <div
+            style="flex: 1; background: rgba(229, 192, 123, 0.1); border: 1px solid rgba(229, 192, 123, 0.3); border-radius: 6px; padding: 10px; text-align: center;">
+            <div style="font-size: 0.72rem; color: #e5c07b; font-weight: 600;">TOTAL FOKUS</div>
+            <div id="modalTotalFocusText" style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-top: 2px;">
+              0m</div>
+          </div>
+          <div
+            style="flex: 1; background: rgba(152, 195, 121, 0.1); border: 1px solid rgba(152, 195, 121, 0.3); border-radius: 6px; padding: 10px; text-align: center;">
+            <div style="font-size: 0.72rem; color: #98c379; font-weight: 600;">TOTAL ISTIRAHAT</div>
+            <div id="modalTotalBreakText" style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-top: 2px;">
+              0m</div>
+          </div>
+          <div
+            style="flex: 1; background: rgba(97, 175, 239, 0.1); border: 1px solid rgba(97, 175, 239, 0.3); border-radius: 6px; padding: 10px; text-align: center;">
+            <div style="font-size: 0.72rem; color: #61afef; font-weight: 600;">SESI SELESAI</div>
+            <div id="modalTotalSessionsText"
+              style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-top: 2px;">0</div>
+          </div>
+        </div>
+
+        <h4 style="font-size: 0.85rem; color: #abb2bf; margin-bottom: 8px;"><i
+            class="fa-solid fa-clock-rotate-left"></i> Log Riwayat Sesi Selesai</h4>
+        <div id="pomoHistoryList"
+          style="max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px;">
+          <!-- Items inserted via JS -->
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 14px; justify-content: space-between;">
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" id="btnTestAlarmSound" title="Uji Coba Suara Alarm"><i
+              class="fa-solid fa-volume-high"></i> Tes Alarm</button>
+          <button class="btn btn-secondary" id="btnClearPomoHistory" style="color: #e06c75;"><i
+              class="fa-solid fa-trash"></i> Reset Stat</button>
+        </div>
+        <button class="btn btn-primary" id="btnClosePomoHistory">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal About / Credits -->
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-card about-modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-circle-info"></i> About Kanban Notes Desktop</h3>
+        <button class="btn-close" id="btnCloseAboutModal">&times;</button>
+      </div>
+      <div class="about-body">
+        <div class="about-author-box">
+          <img src="icon.png" class="about-logo" alt="Logo" />
+          <div>
+            <h4>Kanban Notes Desktop v1.0.0</h4>
+            <p class="about-developer">Created & Developed by <strong>Nurul Hidayat</strong></p>
+          </div>
+        </div>
+        <div class="about-message-box">
+          <p class="en-message">
+            <i class="fa-solid fa-heart"></i> "This application is completely free to use, modify, and extend for any
+            purpose. If you would like to get the full source code or project files, feel free to contact me!"
+          </p>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="btnCloseAbout">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Workspace Manager -->
+  <div class="modal-overlay" id="modalWorkspace">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-folder-open"></i> Kelola Ruang Kerja</h3>
+        <button class="modal-close" id="btnCloseWorkspaceModal" title="Tutup">&times;</button>
+      </div>
+
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+
+        <!-- Header & Search for Workspace List -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">Daftar Ruang Kerja</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.78rem; color: var(--text-muted);" id="workspaceCountText">1 Ruang Kerja</span>
+              <div style="display: flex; gap: 4px;">
+                <button id="btnWsPrevPage" class="btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;"
+                  title="Sebelumnya"><i class="fa-solid fa-chevron-left"></i></button>
+                <button id="btnWsNextPage" class="btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;"
+                  title="Selanjutnya"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Workspace Box -->
+          <div class="search-box" style="width: 100%;">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="inputSearchWorkspace" placeholder="Cari ruang kerja..."
+              style="width: 100%; height: 34px; font-size: 0.83rem;" />
+          </div>
+
+          <!-- Dynamic Workspace List Container -->
+          <div id="workspaceListContainer"
+            style="display: flex; flex-direction: column; gap: 8px; min-height: 110px; max-height: 210px; overflow-y: auto; padding-right: 4px;">
+            <!-- Dynamic items rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Add New Workspace Form -->
+        <div style="border-top: 1px solid var(--border-color); padding-top: 16px;">
+          <label for="inputWsTitle"
+            style="font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 10px; display: block;">
+            + Tambah Ruang Kerja Baru
+          </label>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="text" id="inputWsTitle" placeholder="Nama ruang kerja (contoh: Proyek App, Kantor...)"
+              style="flex: 1; height: 36px; padding: 0 12px; font-size: 0.85rem;" />
+            <button class="btn btn-primary" id="btnSaveWorkspace"
+              style="height: 36px; padding: 0 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+              <i class="fa-solid fa-plus"></i> Buat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Sleek Confirmation Modal -->
+  <div class="modal-overlay" id="modalConfirm" style="z-index: 2000;">
+    <div class="modal-card" style="max-width: 400px; text-align: center; padding: 24px 20px;">
+      <div
+        style="width: 50px; height: 50px; border-radius: 50%; background: rgba(224, 108, 117, 0.15); color: #e06c75; display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 12px auto;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="confirmTitle" style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">
+        Konfirmasi Hapus</h3>
+      <p id="confirmMessage"
+        style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+        Apakah Anda yakin ingin menghapus item ini?
+      </p>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button id="btnConfirmCancel" class="btn btn-secondary"
+          style="flex: 1; height: 36px; font-size: 0.85rem;">Batal</button>
+        <button id="btnConfirmOk" class="btn btn-danger"
+          style="flex: 1; height: 36px; font-size: 0.85rem; background: #e06c75; color: #fff; border: none; font-weight: 600; cursor: pointer; border-radius: 6px;">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Sleek Alert Modal -->
+  <div class="modal-overlay" id="modalAlert" style="z-index: 2050;">
+    <div class="modal-card" style="max-width: 380px; text-align: center; padding: 24px 20px;">
+      <div
+        style="width: 48px; height: 48px; border-radius: 50%; background: rgba(97, 175, 239, 0.15); color: #61afef; display: inline-flex; align-items: center; justify-content: center; font-size: 1.4rem; margin: 0 auto 12px auto;">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <h3 id="alertTitle" style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">
+        Pemberitahuan</h3>
+      <p id="alertMessage" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 18px;">
+        Pesan pemberitahuan
+      </p>
+      <button id="btnAlertOk" class="btn btn-primary"
+        style="width: 100%; height: 36px; font-size: 0.85rem; cursor: pointer;">Selesai</button>
+    </div>
+  </div>
+
+  <!-- Custom Sleek Input Prompt Modal -->
+  <div class="modal-overlay" id="modalPrompt" style="z-index: 2040;">
+    <div class="modal-card" style="max-width: 420px; padding: 24px 20px;">
+      <div class="modal-header" style="margin-bottom: 12px;">
+        <h3 id="promptTitle" style="font-size: 1.05rem; font-weight: 700; color: var(--text-main);"><i
+            class="fa-solid fa-square-plus" style="color: var(--accent-primary);"></i> Tambah Kolom Kustom</h3>
+        <button class="modal-close" id="btnPromptCloseX" title="Tutup">&times;</button>
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label id="promptLabel" for="inputPromptText"
+          style="font-size: 0.84rem; color: var(--text-muted); display: block; margin-bottom: 8px;">
+          Masukkan nama kolom baru:
+        </label>
+        <input type="text" id="inputPromptText" placeholder="Contoh: Testing, Backlog, Ideas..."
+          style="width: 100%; height: 38px; padding: 0 12px; font-size: 0.85rem;" />
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button id="btnPromptCancel" class="btn btn-secondary"
+          style="height: 36px; padding: 0 16px; font-size: 0.85rem;">Batal</button>
+        <button id="btnPromptOk" class="btn btn-primary"
+          style="height: 36px; padding: 0 18px; font-size: 0.85rem;">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/workspace.js"></script>
+  <script src="js/pomodoro.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
