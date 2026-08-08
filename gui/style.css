@@ -69,23 +69,81 @@
 
 /* Light Theme Overrides for High Contrast & Readability */
 [data-theme="light"] .brand h1 {
-  color: #1f2937;
+  color: #1f2937 !important;
+}
+
+[data-theme="light"] .subtitle {
+  color: #4b5563 !important;
+}
+
+[data-theme="light"] .stat-pill {
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
+  color: #374151 !important;
+}
+
+[data-theme="light"] .stat-pill .stat-num {
+  color: #111827 !important;
+}
+
+[data-theme="light"] .stat-todo .stat-num { color: #2563eb !important; }
+[data-theme="light"] .stat-progress .stat-num { color: #d97706 !important; }
+[data-theme="light"] .stat-review .stat-num { color: #7c3aed !important; }
+[data-theme="light"] .stat-done .stat-num { color: #059669 !important; }
+[data-theme="light"] .stat-progress-pill .stat-num { color: #059669 !important; }
+
+[data-theme="light"] .stat-num {
+  font-weight: 700;
+}
+
+[data-theme="light"] .search-box input {
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
+  color: #1f2937 !important;
+}
+
+[data-theme="light"] .search-box input::placeholder {
+  color: #6b7280 !important;
+}
+
+[data-theme="light"] .search-icon {
+  color: #6b7280 !important;
+}
+
+[data-theme="light"] .filter-select,
+[data-theme="light"] .pomo-duration-select,
+[data-theme="light"] .workspace-select {
+  background-color: #ffffff !important;
+  border-color: #d1d5db !important;
+  color: #1f2937 !important;
+}
+
+[data-theme="light"] .filter-select option,
+[data-theme="light"] .pomo-duration-select option,
+[data-theme="light"] .workspace-select option {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+[data-theme="light"] .workspace-picker {
+  background: #e5e7eb !important;
+  border-color: #d1d5db !important;
 }
 
 [data-theme="light"] .btn-secondary {
-  background: #e5e7eb;
-  color: #1f2937;
-  border: 1px solid #d1d5db;
+  background: #e5e7eb !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
 }
 
 [data-theme="light"] .btn-secondary:hover {
-  background: #d1d5db;
-  color: #111827;
+  background: #d1d5db !important;
+  color: #111827 !important;
 }
 
 [data-theme="light"] .column-header {
-  background: #e2e8f0;
-  border-bottom: 1px solid #cbd5e1;
+  background: #e2e8f0 !important;
+  border-bottom: 1px solid #cbd5e1 !important;
 }
 
 [data-theme="light"] .column-title h2 {
@@ -94,26 +152,26 @@
 }
 
 [data-theme="light"] .column-badge {
-  background: #d1d5db;
-  color: #374151;
+  background: #d1d5db !important;
+  color: #374151 !important;
 }
 
 [data-theme="light"] .pomodoro-pill {
-  background: #ffffff;
-  border-color: #d1d5db;
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
 }
 
 [data-theme="light"] .pomo-timer {
-  color: #1f2937;
+  color: #1f2937 !important;
 }
 
 [data-theme="light"] .pomo-action-btn {
-  background: #e5e7eb;
-  color: #1f2937;
+  background: #e5e7eb !important;
+  color: #1f2937 !important;
 }
 
 [data-theme="light"] .pomo-action-btn:hover {
-  background: #d1d5db;
+  background: #d1d5db !important;
 }
 
 [data-theme="light"] .card-title {
@@ -126,8 +184,12 @@
   font-weight: 400;
 }
 
+[data-theme="light"] .card-footer {
+  border-top-color: #e5e7eb !important;
+}
+
 [data-theme="light"] .card-tag {
-  background: #e5e7eb;
+  background: #e5e7eb !important;
   color: #047857 !important;
   font-weight: 600;
 }
@@ -137,7 +199,28 @@
 }
 
 [data-theme="light"] .icon-btn:hover {
-  background: #e5e7eb;
+  background: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+[data-theme="light"] .form-group label {
+  color: #374151 !important;
+}
+
+[data-theme="light"] .form-group input,
+[data-theme="light"] .form-group textarea,
+[data-theme="light"] .form-group select {
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
+  color: #1f2937 !important;
+}
+
+[data-theme="light"] .form-group input::placeholder,
+[data-theme="light"] .form-group textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .modal-header h3 {
   color: #111827 !important;
 }
 
