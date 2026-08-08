@@ -108,6 +108,14 @@ class KanbanAppWindow(BaseWindow):
 
         self.add(self.webview)
 
+        # Auto-retry on load failure (e.g. temporary socket delay)
+        def on_load_failed(webview, load_event, failing_uri, error):
+            print(f"⚠️ WebKit load failed for {failing_uri}: {error}. Retrying in 200ms...")
+            GLib.timeout_add(200, lambda: (webview.load_uri(failing_uri), False)[1])
+            return True
+
+        self.webview.connect("load-failed", on_load_failed)
+
         # Load Web Application
         url = f"http://127.0.0.1:{port}/index.html"
         self.webview.load_uri(url)
@@ -123,13 +131,26 @@ def start_backend_server(port):
     server = HTTPServer(('127.0.0.1', port), KanbanRequestHandler)
     server.serve_forever()
 
+def wait_for_server(port, timeout=3.0):
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        try:
+            with socket.create_connection(('127.0.0.1', port), timeout=0.2):
+                return True
+        except (OSError, ConnectionRefusedError):
+            time.sleep(0.05)
+    return False
+
 def main():
     init_db()
 
     port = find_free_port()
     t = threading.Thread(target=start_backend_server, args=(port,), daemon=True)
     t.start()
-    time.sleep(0.3)
+    
+    # Wait until HTTP backend server is actively accepting connections
+    if not wait_for_server(port):
+        print(f"⚠️ Warning: Server on port {port} did not respond within timeout.")
 
     print(f"🚀 Kanban Notes Desktop Backend running on http://127.0.0.1:{port}")
 

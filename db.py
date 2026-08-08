@@ -100,6 +100,13 @@ def init_db():
             completedAt TEXT
         )
     """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            val TEXT
+        )
+    """)
     conn.commit()
 
     # Migration check for workspace_id column in notes
@@ -374,3 +381,29 @@ def generate_markdown_export():
             lines.append("\n")
 
     return "\n".join(lines)
+
+def load_theme():
+    init_db()
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT val FROM settings WHERE key = 'theme'")
+        row = cursor.fetchone()
+        conn.close()
+        return row[0] if row and row[0] else "dark"
+    except Exception as e:
+        print(f"Error loading theme from SQLite: {e}")
+        return "dark"
+
+def save_theme(theme_name):
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("INSERT OR REPLACE INTO settings (key, val) VALUES ('theme', ?)", (theme_name,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"Error saving theme to SQLite: {e}")
+        return False
+

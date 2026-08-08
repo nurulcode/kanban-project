@@ -146,6 +146,22 @@ class TestKanbanBackend(unittest.TestCase):
                 self.assertTrue(exp_data.get("success"))
                 self.assertTrue(os.path.exists(exp_data.get("path")))
 
+            # 6. Test GET & POST /api/theme
+            theme_url = f"http://127.0.0.1:{port}/api/theme"
+            post_theme_data = json.dumps({"theme": "light"}).encode('utf-8')
+            post_theme_req = urllib.request.Request(theme_url, data=post_theme_data, headers={'Content-Type': 'application/json'})
+            with urllib.request.urlopen(post_theme_req) as post_t_resp:
+                self.assertEqual(post_t_resp.status, 200)
+                t_res = json.loads(post_t_resp.read().decode('utf-8'))
+                self.assertTrue(t_res.get("success"))
+                self.assertEqual(t_res.get("theme"), "light")
+
+            theme_get_req = urllib.request.Request(theme_url)
+            with urllib.request.urlopen(theme_get_req) as get_t_resp:
+                self.assertEqual(get_t_resp.status, 200)
+                t_data = json.loads(get_t_resp.read().decode('utf-8'))
+                self.assertEqual(t_data.get("theme"), "light")
+
         finally:
             srv.shutdown()
 

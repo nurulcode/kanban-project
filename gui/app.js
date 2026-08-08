@@ -4,15 +4,51 @@ document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
 
-function initApp() {
-  fetchWorkspaces();
-  fetchColumns();
-  fetchNotes();
-  setupFormEventListeners();
-  setupWorkspaceUI();
-  setupGlobalEventListeners();
-  setupPomodoro();
-  setupMouseDragScroll();
+async function initApp() {
+  const safetyTimeout = setTimeout(() => {
+    hideAppLoader();
+  }, 3500);
+
+  try {
+    updateLoaderProgress(25, 'Memuat Ruang Kerja...');
+    await fetchWorkspaces();
+
+    updateLoaderProgress(60, 'Memuat Kolom & Catatan...');
+    await Promise.all([fetchColumns(), fetchNotes()]);
+
+    updateLoaderProgress(90, 'Menyiapkan Antarmuka...');
+    setupFormEventListeners();
+    setupWorkspaceUI();
+    setupGlobalEventListeners();
+    setupPomodoro();
+    setupMouseDragScroll();
+
+    updateLoaderProgress(100, 'Aplikasi Siap!');
+  } catch (err) {
+    console.error('Initialization error:', err);
+  } finally {
+    clearTimeout(safetyTimeout);
+    setTimeout(() => {
+      hideAppLoader();
+    }, 300);
+  }
+}
+
+function updateLoaderProgress(percent, text) {
+  const bar = document.getElementById('loaderBarFill');
+  const status = document.getElementById('loaderStatusText');
+  if (bar) bar.style.width = percent + '%';
+  if (status && text) status.textContent = text;
+}
+
+function hideAppLoader() {
+  const loader = document.getElementById('appLoader');
+  if (loader) {
+    loader.classList.add('hidden');
+    setTimeout(() => {
+      if (loader.parentNode) loader.parentNode.removeChild(loader);
+    }, 450);
+  }
 }
 
 function setupFormEventListeners() {

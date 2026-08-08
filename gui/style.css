@@ -1041,3 +1041,112 @@ body.focus-mode-active .kanban-column.column-in_progress {
     padding: 2px 6px;
   }
 }
+
+/* App Loading Overlay / Splash Screen */
+.app-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-primary, #282c34);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  user-select: none;
+}
+
+.app-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+}
+
+.loader-logo-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-logo {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  animation: pulseLogo 1.8s infinite ease-in-out;
+  border-radius: 12px;
+}
+
+.loader-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  border: 3px solid rgba(97, 175, 239, 0.15);
+  border-top-color: var(--accent-primary, #61afef);
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseLogo {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.loader-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-main, #ffffff);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.loader-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted, #5c6370);
+  margin-bottom: 18px;
+}
+
+.loader-bar-container {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #61afef, #98c379);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+

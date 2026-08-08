@@ -7,6 +7,7 @@ from db import (
     load_columns, save_columns,
     load_workspaces, save_workspaces,
     load_pomo_stats, save_pomo_stats,
+    load_theme, save_theme,
     generate_markdown_export
 )
 from autostart import get_autostart_status, set_autostart_status
@@ -73,6 +74,13 @@ class KanbanRequestHandler(SimpleHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
             self.wfile.write(json.dumps(stats).encode("utf-8"))
+        elif self.path == "/api/theme":
+            theme = load_theme()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"theme": theme}).encode("utf-8"))
         else:
             super().do_GET()
 
@@ -167,6 +175,22 @@ class KanbanRequestHandler(SimpleHTTPRequestHandler):
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
                 self.wfile.write(json.dumps({"success": success}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+        elif self.path == "/api/theme":
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data.decode("utf-8"))
+                theme_name = data.get("theme", "dark")
+                success = save_theme(theme_name)
+                self.send_response(200 if success else 500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": success, "theme": theme_name}).encode("utf-8"))
             except Exception as e:
                 self.send_response(400)
                 self.end_headers()
