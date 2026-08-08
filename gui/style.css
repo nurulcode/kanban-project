@@ -389,11 +389,18 @@ body {
 }
 
 .filter-select {
-  background: #1e2227;
-  border: 1px solid #3e4451;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #1e2227 !important;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  background-size: 10px auto !important;
+  border: 1px solid #3e4451 !important;
   color: #ffffff !important;
   font-weight: 500;
-  padding: 0 8px;
+  padding: 0 28px 0 10px;
   height: 32px;
   border-radius: 6px;
   font-size: 0.82rem;
@@ -409,7 +416,7 @@ select option {
 }
 
 .filter-select:focus {
-  border-color: var(--accent-primary);
+  border-color: var(--accent-primary) !important;
 }
 
 /* Compact Buttons */
@@ -494,13 +501,20 @@ select option {
 }
 
 .pomo-duration-select {
-  background: #1e2227;
-  border: 1px solid #3e4451;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #1e2227 !important;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
+  background-size: 8px auto !important;
+  border: 1px solid #3e4451 !important;
   color: #ffffff !important;
   border-radius: 4px;
   font-size: 0.76rem;
   font-weight: 600;
-  padding: 1px 4px;
+  padding: 2px 20px 2px 6px;
   cursor: pointer;
   outline: none;
 }
