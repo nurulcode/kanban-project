@@ -219,10 +219,13 @@ function setupDragAndDrop() {
       const afterElement = getDragAfterElement(container, e.clientY);
       const draggingCard = document.querySelector('.kanban-card.dragging');
       if (draggingCard) {
-        if (afterElement == null) {
-          container.appendChild(draggingCard);
-        } else {
-          container.insertBefore(draggingCard, afterElement);
+        const currentNext = draggingCard.nextElementSibling;
+        if (afterElement !== currentNext) {
+          if (afterElement == null) {
+            container.appendChild(draggingCard);
+          } else {
+            container.insertBefore(draggingCard, afterElement);
+          }
         }
       }
     });

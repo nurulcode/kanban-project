@@ -737,7 +737,7 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
   border-radius: var(--radius-sm);
   padding: 10px 12px;
   cursor: grab;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -751,6 +751,7 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 .kanban-card.dragging {
   opacity: 0.4;
   cursor: grabbing;
+  transition: none !important;
 }
 
 .card-top {
