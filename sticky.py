@@ -56,7 +56,7 @@ class StickyNoteWindow(Gtk.Window if HAS_GTK else object):
             body {{
               background-color: {bg_color};
               color: #abb2bf;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              font-family: 'JetBrains Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace, sans-serif;
               margin: 0;
               padding: 16px;
               display: flex;
