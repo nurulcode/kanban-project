@@ -29,18 +29,44 @@ async function fetchWorkspaces() {
   }
 }
 
+let lastNotesHash = '';
+
 // Fetch notes from server/database
 async function fetchNotes() {
   try {
     const res = await fetch('/api/notes');
     if (!res.ok) throw new Error('Network error');
     notesData = await res.json();
+    lastNotesHash = JSON.stringify(notesData);
     renderBoard();
   } catch (err) {
     console.warn('API error, using local state:', err);
     renderBoard();
   }
 }
+
+// Background auto-sync polling for live updates (e.g. from sticky notes)
+async function fetchNotesSilent() {
+  // Do not interrupt user while dragging or editing modal
+  if (editingNoteId || draggedNoteId || document.getElementById('noteModal')?.style.display === 'flex') return;
+
+  try {
+    const res = await fetch('/api/notes');
+    if (!res.ok) return;
+    const newNotes = await res.json();
+    const newHash = JSON.stringify(newNotes);
+    if (newHash !== lastNotesHash) {
+      lastNotesHash = newHash;
+      notesData = newNotes;
+      renderBoard();
+    }
+  } catch (err) {
+    // Ignore error in background poll
+  }
+}
+
+// Start periodic polling every 1.2 seconds for real-time synchronization
+setInterval(fetchNotesSilent, 1200);
 
 // Fetch dynamic columns from server
 async function fetchColumns() {
@@ -71,6 +97,7 @@ async function saveWorkspacesToServer() {
 // Save notes to server
 async function saveNotesToServer() {
   try {
+    lastNotesHash = JSON.stringify(notesData);
     await fetch('/api/notes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
