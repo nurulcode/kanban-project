@@ -245,28 +245,21 @@
       </div>
       <div style="padding: 10px 0;">
         <div style="display: flex; gap: 10px; margin-bottom: 14px;">
-          <div
-            style="flex: 1; background: rgba(229, 192, 123, 0.1); border: 1px solid rgba(229, 192, 123, 0.3); border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 0.72rem; color: #e5c07b; font-weight: 600;">TOTAL FOKUS</div>
-            <div id="modalTotalFocusText" style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-top: 2px;">
-              0m</div>
+          <div class="pomo-stat-card pomo-stat-focus">
+            <div class="pomo-stat-label">TOTAL FOKUS</div>
+            <div id="modalTotalFocusText" class="pomo-stat-value">0m</div>
           </div>
-          <div
-            style="flex: 1; background: rgba(152, 195, 121, 0.1); border: 1px solid rgba(152, 195, 121, 0.3); border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 0.72rem; color: #98c379; font-weight: 600;">TOTAL ISTIRAHAT</div>
-            <div id="modalTotalBreakText" style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-top: 2px;">
-              0m</div>
+          <div class="pomo-stat-card pomo-stat-break">
+            <div class="pomo-stat-label">TOTAL ISTIRAHAT</div>
+            <div id="modalTotalBreakText" class="pomo-stat-value">0m</div>
           </div>
-          <div
-            style="flex: 1; background: rgba(97, 175, 239, 0.1); border: 1px solid rgba(97, 175, 239, 0.3); border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 0.72rem; color: #61afef; font-weight: 600;">SESI SELESAI</div>
-            <div id="modalTotalSessionsText"
-              style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-top: 2px;">0</div>
+          <div class="pomo-stat-card pomo-stat-session">
+            <div class="pomo-stat-label">SESI SELESAI</div>
+            <div id="modalTotalSessionsText" class="pomo-stat-value">0</div>
           </div>
         </div>
 
-        <h4 style="font-size: 0.85rem; color: #abb2bf; margin-bottom: 8px;"><i
-            class="fa-solid fa-clock-rotate-left"></i> Log Riwayat Sesi Selesai</h4>
+        <h4 class="pomo-history-subheading"><i class="fa-solid fa-clock-rotate-left"></i> Log Riwayat Sesi Selesai</h4>
         <div id="pomoHistoryList"
           style="max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px;">
           <!-- Items inserted via JS -->

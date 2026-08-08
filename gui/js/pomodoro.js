@@ -268,7 +268,7 @@ function renderPomoHistoryModal() {
 
   if (pomoHistory.length === 0) {
     historyList.innerHTML = `
-      <div style="text-align: center; color: #858585; padding: 20px 0; font-size: 0.82rem;">
+      <div style="text-align: center; color: var(--text-muted); padding: 20px 0; font-size: 0.82rem;">
         <i class="fa-solid fa-inbox" style="font-size: 1.5rem; margin-bottom: 6px; display: block;"></i>
         Belum ada riwayat sesi yang selesai. Mulai timer fokus untuk mencatat!
       </div>
@@ -280,21 +280,21 @@ function renderPomoHistoryModal() {
   pomoHistory.forEach((item) => {
     const isFocus = item.type === 'Fokus';
     const icon = isFocus ? 'fa-fire' : 'fa-mug-hot';
-    const color = isFocus ? '#e5c07b' : '#98c379';
-    const bg = isFocus ? 'rgba(229, 192, 123, 0.15)' : 'rgba(152, 195, 121, 0.15)';
+    const iconClass = isFocus ? 'icon-focus' : 'icon-break';
+    const badgeClass = isFocus ? 'badge-focus' : 'badge-break';
 
     html += `
-      <div style="display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 6px;">
+      <div class="pomo-history-item">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 28px; height: 28px; border-radius: 6px; background: ${bg}; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 0.85rem;">
+          <div class="pomo-item-icon ${iconClass}">
             <i class="fa-solid ${icon}"></i>
           </div>
           <div>
-            <div style="font-size: 0.85rem; font-weight: 600; color: #ffffff;">Sesi ${escapeHtml(item.type)} (${item.durationMinutes}m)</div>
-            <div style="font-size: 0.72rem; color: #858585;">${escapeHtml(item.completedAt)}</div>
+            <div class="pomo-history-title">Sesi ${escapeHtml(item.type)} (${item.durationMinutes}m)</div>
+            <div class="pomo-history-date">${escapeHtml(item.completedAt)}</div>
           </div>
         </div>
-        <span style="font-size: 0.75rem; font-weight: 600; color: ${color}; background: ${bg}; padding: 2px 8px; border-radius: 10px;">
+        <span class="pomo-history-badge ${badgeClass}">
           Selesai ✅
         </span>
       </div>
@@ -396,47 +396,58 @@ document.addEventListener('click', () => {
   getAudioContext();
 }, { passive: true });
 
-function playAlarmSound() {
-  // 1. Native Linux PulseAudio sound via Python backend
-  fetch('/api/play_sound', { method: 'POST' }).catch(() => {});
+function playAlarmSound(repeatCount = 3) {
+  let playedCount = 0;
 
-  // 2. HTML5 Audio Element (plays alarm.wav)
-  try {
-    const audio = new Audio('alarm.wav');
-    audio.volume = 1.0;
-    audio.play().catch(() => {});
-  } catch (e) {}
+  function playOnce() {
+    // 1. Native Linux PulseAudio sound via Python backend
+    fetch('/api/play_sound', { method: 'POST' }).catch(() => {});
 
-  // 3. Web Audio API synthesizer
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
+    // 2. HTML5 Audio Element (plays alarm.wav)
+    try {
+      const audio = new Audio('alarm.wav');
+      audio.volume = 1.0;
+      audio.play().catch(() => {});
+    } catch (e) {}
 
-    if (ctx.state === 'suspended') {
-      ctx.resume();
+    // 3. Web Audio API synthesizer
+    try {
+      const ctx = getAudioContext();
+      if (ctx) {
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+
+        const now = ctx.currentTime;
+        // Multi-chime melody: C5, E5, G5, C6
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + i * 0.18);
+
+          gain.gain.setValueAtTime(0.7, now + i * 0.18);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.18 + 0.38);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(now + i * 0.18);
+          osc.stop(now + i * 0.18 + 0.4);
+        });
+      }
+    } catch (e) {
+      console.log('Audio playback error:', e);
     }
 
-    const now = ctx.currentTime;
-    // Multi-chime melody: C5, E5, G5, C6
-    const notes = [523.25, 659.25, 783.99, 1046.50];
-
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, now + i * 0.18);
-
-      gain.gain.setValueAtTime(0.7, now + i * 0.18);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.18 + 0.38);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start(now + i * 0.18);
-      osc.stop(now + i * 0.18 + 0.4);
-    });
-  } catch (e) {
-    console.log('Audio playback error:', e);
+    playedCount++;
+    if (playedCount < repeatCount) {
+      setTimeout(playOnce, 2500);
+    }
   }
+
+  playOnce();
 }

@@ -234,6 +234,67 @@
   color: #111827 !important;
 }
 
+/* Light Theme Overrides for Pomodoro History & Stats Modal */
+[data-theme="light"] .pomo-stat-card.pomo-stat-focus {
+  background: #fef3c7 !important;
+  border-color: #fde68a !important;
+}
+
+[data-theme="light"] .pomo-stat-card.pomo-stat-focus .pomo-stat-label {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .pomo-stat-card.pomo-stat-break {
+  background: #d1fae5 !important;
+  border-color: #a7f3d0 !important;
+}
+
+[data-theme="light"] .pomo-stat-card.pomo-stat-break .pomo-stat-label {
+  color: #047857 !important;
+}
+
+[data-theme="light"] .pomo-stat-card.pomo-stat-session {
+  background: #dbeafe !important;
+  border-color: #bfdbfe !important;
+}
+
+[data-theme="light"] .pomo-stat-card.pomo-stat-session .pomo-stat-label {
+  color: #1d4ed8 !important;
+}
+
+[data-theme="light"] .pomo-stat-value {
+  color: #111827 !important;
+}
+
+[data-theme="light"] .pomo-history-subheading {
+  color: #4b5563 !important;
+}
+
+[data-theme="light"] .pomo-history-item {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+}
+
+[data-theme="light"] .pomo-history-title {
+  color: #111827 !important;
+}
+
+[data-theme="light"] .pomo-history-date {
+  color: #6b7280 !important;
+}
+
+[data-theme="light"] .pomo-item-icon.icon-focus,
+[data-theme="light"] .pomo-history-badge.badge-focus {
+  background: #fef3c7 !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .pomo-item-icon.icon-break,
+[data-theme="light"] .pomo-history-badge.badge-break {
+  background: #d1fae5 !important;
+  color: #047857 !important;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -632,6 +693,117 @@ select option {
 .pomo-alert-card {
   max-width: 400px;
   text-align: center;
+}
+
+/* Pomodoro History & Stats Modal Components */
+.pomo-stat-card {
+  flex: 1;
+  border-radius: var(--radius-md);
+  padding: 10px;
+  text-align: center;
+}
+
+.pomo-stat-card.pomo-stat-focus {
+  background: rgba(229, 192, 123, 0.1);
+  border: 1px solid rgba(229, 192, 123, 0.3);
+}
+
+.pomo-stat-card.pomo-stat-focus .pomo-stat-label {
+  color: #e5c07b;
+}
+
+.pomo-stat-card.pomo-stat-break {
+  background: rgba(152, 195, 121, 0.1);
+  border: 1px solid rgba(152, 195, 121, 0.3);
+}
+
+.pomo-stat-card.pomo-stat-break .pomo-stat-label {
+  color: #98c379;
+}
+
+.pomo-stat-card.pomo-stat-session {
+  background: rgba(97, 175, 239, 0.1);
+  border: 1px solid rgba(97, 175, 239, 0.3);
+}
+
+.pomo-stat-card.pomo-stat-session .pomo-stat-label {
+  color: #61afef;
+}
+
+.pomo-stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.pomo-stat-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 2px;
+}
+
+.pomo-history-subheading {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.pomo-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+}
+
+.pomo-history-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.pomo-history-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.pomo-item-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.pomo-item-icon.icon-focus {
+  background: rgba(229, 192, 123, 0.15);
+  color: #e5c07b;
+}
+
+.pomo-item-icon.icon-break {
+  background: rgba(152, 195, 121, 0.15);
+  color: #98c379;
+}
+
+.pomo-history-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.pomo-history-badge.badge-focus {
+  background: rgba(229, 192, 123, 0.15);
+  color: #e5c07b;
+}
+
+.pomo-history-badge.badge-break {
+  background: rgba(152, 195, 121, 0.15);
+  color: #98c379;
 }
 
 .pomo-alert-header {
