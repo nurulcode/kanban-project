@@ -182,19 +182,37 @@ function createCardElement(note) {
     draggedNoteId = note.id;
     card.classList.add('dragging');
     e.dataTransfer.setData('text/plain', note.id);
+
+    if (!dragPlaceholder) {
+      dragPlaceholder = document.createElement('div');
+      dragPlaceholder.className = 'card-placeholder';
+    }
+    dragPlaceholder.style.height = (card.offsetHeight || 60) + 'px';
+
+    setTimeout(() => {
+      if (card.parentNode && dragPlaceholder) {
+        card.parentNode.insertBefore(dragPlaceholder, card.nextElementSibling);
+      }
+    }, 0);
   });
 
   card.addEventListener('dragend', () => {
     draggedNoteId = null;
     card.classList.remove('dragging');
+    if (dragPlaceholder && dragPlaceholder.parentNode) {
+      dragPlaceholder.parentNode.removeChild(dragPlaceholder);
+    }
+    dragPlaceholder = null;
   });
 
   return card;
 }
 
+let dragPlaceholder = null;
+
 // Get element after which dragged element should be placed (Vertical Reordering)
 function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll('.kanban-card:not(.dragging)')];
+  const draggableElements = [...container.querySelectorAll('.kanban-card:not(.dragging):not(.card-placeholder)')];
 
   return draggableElements.reduce((closest, child) => {
     const box = child.getBoundingClientRect();
@@ -216,16 +234,15 @@ function setupDragAndDrop() {
       e.preventDefault();
       container.classList.add('drag-over');
 
+      if (!dragPlaceholder) return;
+
       const afterElement = getDragAfterElement(container, e.clientY);
-      const draggingCard = document.querySelector('.kanban-card.dragging');
-      if (draggingCard) {
-        const currentNext = draggingCard.nextElementSibling;
-        if (afterElement !== currentNext) {
-          if (afterElement == null) {
-            container.appendChild(draggingCard);
-          } else {
-            container.insertBefore(draggingCard, afterElement);
-          }
+      const currentNext = dragPlaceholder.nextElementSibling;
+      if (afterElement !== currentNext) {
+        if (afterElement == null) {
+          container.appendChild(dragPlaceholder);
+        } else {
+          container.insertBefore(dragPlaceholder, afterElement);
         }
       }
     });
@@ -248,19 +265,25 @@ function setupDragAndDrop() {
       draggedNote.column = targetCol;
       draggedNote.workspace_id = currentWorkspaceId;
 
-      const afterElement = getDragAfterElement(container, e.clientY);
-      if (afterElement) {
-        const afterId = afterElement.dataset.id;
-        const targetIndex = notesData.findIndex(n => n.id === afterId);
-        if (targetIndex !== -1) {
-          notesData.splice(targetIndex, 0, draggedNote);
+      if (dragPlaceholder && dragPlaceholder.parentNode) {
+        const nextCard = dragPlaceholder.nextElementSibling;
+        if (nextCard && nextCard.classList.contains('kanban-card') && !nextCard.classList.contains('dragging')) {
+          const afterId = nextCard.dataset.id;
+          const targetIndex = notesData.findIndex(n => n.id === afterId);
+          if (targetIndex !== -1) {
+            notesData.splice(targetIndex, 0, draggedNote);
+          } else {
+            notesData.push(draggedNote);
+          }
         } else {
           notesData.push(draggedNote);
         }
+        dragPlaceholder.parentNode.removeChild(dragPlaceholder);
       } else {
         notesData.push(draggedNote);
       }
 
+      dragPlaceholder = null;
       renderBoard();
       saveNotesToServer();
     });

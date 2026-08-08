@@ -754,6 +754,16 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
   transition: none !important;
 }
 
+.card-placeholder {
+  background: rgba(0, 122, 204, 0.15);
+  border: 2px dashed var(--accent-primary);
+  border-radius: var(--radius-sm);
+  transition: none !important;
+  box-sizing: border-box;
+  pointer-events: none;
+  margin-bottom: 2px;
+}
+
 .card-top {
   display: flex;
   justify-content: space-between;
