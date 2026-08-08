@@ -191,7 +191,8 @@ function createCardElement(note) {
 
     setTimeout(() => {
       if (card.parentNode && dragPlaceholder) {
-        card.parentNode.insertBefore(dragPlaceholder, card.nextElementSibling);
+        card.parentNode.insertBefore(dragPlaceholder, card);
+        card.style.display = 'none';
       }
     }, 0);
   });
@@ -199,6 +200,7 @@ function createCardElement(note) {
   card.addEventListener('dragend', () => {
     draggedNoteId = null;
     card.classList.remove('dragging');
+    card.style.display = '';
     if (dragPlaceholder && dragPlaceholder.parentNode) {
       dragPlaceholder.parentNode.removeChild(dragPlaceholder);
     }
