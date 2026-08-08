@@ -1,15 +1,15 @@
 :root {
-  /* Atom One Dark Pro Theme Palette (Default Eye-Friendly Dark) */
-  --bg-primary: #282c34;
+  /* Atom One Dark Pro Theme Palette (High-Contrast Eye-Friendly Dark) */
+  --bg-primary: #1e2227;
   --bg-surface: #21252b;
   --bg-surface-hover: #2c313a;
-  --bg-card: #21252b;
+  --bg-card: #282c34;
   
-  --border-color: #181a1f;
+  --border-color: #353b45;
   --border-hover: #61afef;
   
-  --text-main: #abb2bf;
-  --text-muted: #5c6370;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
   --text-dim: #98c379;
   
   --accent-primary: #61afef;
@@ -348,7 +348,7 @@ body {
 }
 
 .workspace-select option {
-  background: var(--bg-secondary);
+  background: var(--bg-surface);
   color: var(--text-main);
 }
 
@@ -361,13 +361,13 @@ body {
 .search-icon {
   position: absolute;
   left: 10px;
-  color: #666666;
+  color: #94a3b8;
 }
 
 .search-box input {
-  background: #ffffff;
-  border: 1px solid #cccccc;
-  color: #000000 !important;
+  background: #1e2227;
+  border: 1px solid #3e4451;
+  color: #ffffff !important;
   font-weight: 500;
   padding: 0 10px 0 30px;
   height: 32px;
@@ -378,20 +378,20 @@ body {
 }
 
 .search-box input::placeholder {
-  color: #777777;
+  color: #94a3b8;
 }
 
 .search-box input:focus {
   outline: none;
-  background: #ffffff;
+  background: #1e2227;
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 2px var(--accent-glow);
 }
 
 .filter-select {
-  background: #ffffff;
-  border: 1px solid #cccccc;
-  color: #000000 !important;
+  background: #1e2227;
+  border: 1px solid #3e4451;
+  color: #ffffff !important;
   font-weight: 500;
   padding: 0 8px;
   height: 32px;
@@ -403,8 +403,8 @@ body {
 
 .filter-select option,
 select option {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+  background-color: #21252b !important;
+  color: #ffffff !important;
   font-weight: 500;
 }
 
@@ -437,12 +437,14 @@ select option {
 }
 
 .btn-secondary {
-  background: #3c3c3c;
+  background: #2d3139;
   color: var(--text-main);
+  border: 1px solid #3e4451;
 }
 
 .btn-secondary:hover {
-  background: #4a4a4a;
+  background: #3e4451;
+  color: #ffffff;
 }
 
 /* Stats & Pomodoro Bar */
@@ -459,7 +461,7 @@ select option {
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.76rem;
-  color: var(--text-muted);
+  color: #cbd5e1;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -468,7 +470,7 @@ select option {
 
 .stat-num {
   font-weight: 700;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
 .stat-todo .stat-num { color: var(--color-todo); }
@@ -480,7 +482,7 @@ select option {
 /* Pomodoro Widget Pill */
 .pomodoro-pill {
   margin-left: auto;
-  background: #2d2d2d;
+  background: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 0 10px;
@@ -492,9 +494,9 @@ select option {
 }
 
 .pomo-duration-select {
-  background: #ffffff;
-  border: 1px solid #cccccc;
-  color: #000000 !important;
+  background: #1e2227;
+  border: 1px solid #3e4451;
+  color: #ffffff !important;
   border-radius: 4px;
   font-size: 0.76rem;
   font-weight: 600;
@@ -504,8 +506,8 @@ select option {
 }
 
 .pomo-duration-select option {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+  background-color: #21252b !important;
+  color: #ffffff !important;
 }
 
 .pomo-icon {
@@ -556,7 +558,7 @@ select option {
 
 .pomo-alert-msg {
   font-size: 0.9rem;
-  color: #cccccc;
+  color: #e2e8f0;
   margin-bottom: 20px;
   line-height: 1.5;
 }
@@ -586,7 +588,7 @@ select option {
 }
 
 .pomo-action-btn:hover {
-  background: #3c3c3c;
+  background: #3e4451;
   color: #ffffff;
 }
 
@@ -657,8 +659,8 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 
 .column-title h2 {
   font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-main);
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .column-dot {
@@ -673,8 +675,8 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 .dot-done { background-color: var(--color-done); }
 
 .column-badge {
-  background: #3c3c3c;
-  color: var(--text-muted);
+  background: #353b45;
+  color: #e2e8f0;
   padding: 1px 7px;
   border-radius: 10px;
   font-size: 0.72rem;
@@ -748,7 +750,7 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
   font-size: 0.88rem;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
 .card-prio {
@@ -768,8 +770,8 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 
 .card-content {
   font-size: 0.8rem;
-  color: var(--text-main);
-  line-height: 1.4;
+  color: #cbd5e1;
+  line-height: 1.45;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -780,15 +782,16 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
   align-items: center;
   margin-top: 2px;
   padding-top: 6px;
-  border-top: 1px solid #2d2d2d;
+  border-top: 1px solid #353b45;
 }
 
 .card-tag {
   font-size: 0.68rem;
-  background: #2d2d2d;
+  background: #283431;
   color: #4ec9b0;
   padding: 2px 6px;
   border-radius: 3px;
+  font-weight: 600;
 }
 
 .card-actions {
@@ -809,8 +812,8 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 }
 
 .icon-btn:hover {
-  background: #3c3c3c;
-  color: var(--text-main);
+  background: #353b45;
+  color: #ffffff;
 }
 
 .icon-btn-danger:hover {
@@ -899,16 +902,16 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 
 .form-group label {
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: #cbd5e1;
   font-weight: 500;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-  background: #ffffff;
-  border: 1px solid #cccccc;
-  color: #000000 !important;
+  background: #1e2227;
+  border: 1px solid #3e4451;
+  color: #ffffff !important;
   font-weight: 500;
   padding: 8px 10px;
   border-radius: 4px;
@@ -917,21 +920,45 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: #777777;
+  color: #94a3b8;
 }
 
 .form-group select option {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+  background-color: #21252b !important;
+  color: #ffffff !important;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  background: #ffffff;
+  background: #1e2227;
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+[data-theme="light"] .search-box input,
+[data-theme="light"] .filter-select,
+[data-theme="light"] .pomo-duration-select,
+[data-theme="light"] .form-group input,
+[data-theme="light"] .form-group textarea,
+[data-theme="light"] .form-group select {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #1f2937 !important;
+}
+
+[data-theme="light"] .search-box input::placeholder,
+[data-theme="light"] .form-group input::placeholder,
+[data-theme="light"] .form-group textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+[data-theme="light"] .filter-select option,
+[data-theme="light"] .pomo-duration-select option,
+[data-theme="light"] .form-group select option {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
 }
 
 .form-row {
