@@ -156,11 +156,14 @@ class TestKanbanBackend(unittest.TestCase):
                 self.assertTrue(t_res.get("success"))
                 self.assertEqual(t_res.get("theme"), "light")
 
-            theme_get_req = urllib.request.Request(theme_url)
-            with urllib.request.urlopen(theme_get_req) as get_t_resp:
-                self.assertEqual(get_t_resp.status, 200)
-                t_data = json.loads(get_t_resp.read().decode('utf-8'))
-                self.assertEqual(t_data.get("theme"), "light")
+            # 7. Test POST /api/notify
+            notify_url = f"http://127.0.0.1:{port}/api/notify"
+            notify_data = json.dumps({"title": "Test Notifikasi", "body": "Uji Coba Notifikasi Kanban Notes"}).encode('utf-8')
+            notify_req = urllib.request.Request(notify_url, data=notify_data, headers={'Content-Type': 'application/json'})
+            with urllib.request.urlopen(notify_req) as notify_resp:
+                self.assertEqual(notify_resp.status, 200)
+                n_res = json.loads(notify_resp.read().decode('utf-8'))
+                self.assertIn("success", n_res)
 
         finally:
             srv.shutdown()

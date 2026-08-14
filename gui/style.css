@@ -234,6 +234,20 @@
   color: #111827 !important;
 }
 
+/* Light Theme Overrides for Pomodoro Alert Modal */
+[data-theme="light"] .pomo-alert-card h3,
+[data-theme="light"] #pomoAlertTitle {
+  color: #111827 !important;
+}
+
+[data-theme="light"] .pomo-alert-msg {
+  color: #374151 !important;
+}
+
+[data-theme="light"] .pomo-alert-icon {
+  color: #d97706 !important;
+}
+
 /* Light Theme Overrides for Pomodoro History & Stats Modal */
 [data-theme="light"] .pomo-stat-card.pomo-stat-focus {
   background: #fef3c7 !important;
@@ -748,6 +762,38 @@ select option {
   margin-bottom: 8px;
 }
 
+.pomo-date-group {
+  margin-bottom: 12px;
+}
+
+.pomo-date-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #61afef;
+  background: rgba(97, 175, 239, 0.1);
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  border-left: 3px solid #61afef;
+}
+
+.pomo-date-summary {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+}
+
+[data-theme="light"] .pomo-date-header {
+  background: #e2e8f0 !important;
+  color: #1d4ed8 !important;
+  border-left-color: #2563eb !important;
+}
+
 .pomo-history-item {
   display: flex;
   justify-content: space-between;
@@ -827,7 +873,7 @@ select option {
 
 .pomo-alert-msg {
   font-size: 0.9rem;
-  color: #e2e8f0;
+  color: var(--text-main);
   margin-bottom: 20px;
   line-height: 1.5;
 }
