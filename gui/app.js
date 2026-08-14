@@ -64,6 +64,8 @@ function setupFormEventListeners() {
       document.getElementById('modalTitle').textContent = 'Tambah Catatan Baru';
       noteForm.reset();
       document.getElementById('noteId').value = '';
+      if (document.getElementById('inputStartDate')) document.getElementById('inputStartDate').value = '';
+      if (document.getElementById('inputDueDate')) document.getElementById('inputDueDate').value = '';
       openModal();
     });
   }
@@ -94,6 +96,8 @@ function setupFormEventListeners() {
       const column = document.getElementById('inputColumn').value;
       const priority = document.getElementById('inputPriority').value;
       const tag = document.getElementById('inputTag').value.trim();
+      const startDate = document.getElementById('inputStartDate') ? document.getElementById('inputStartDate').value : '';
+      const dueDate = document.getElementById('inputDueDate') ? document.getElementById('inputDueDate').value : '';
 
       if (!title) return;
 
@@ -105,6 +109,8 @@ function setupFormEventListeners() {
           note.column = column;
           note.priority = priority;
           note.tag = tag;
+          note.startDate = startDate;
+          note.dueDate = dueDate;
         }
       } else {
         const newNote = {
@@ -115,6 +121,8 @@ function setupFormEventListeners() {
           column,
           priority,
           tag,
+          startDate,
+          dueDate,
           createdAt: new Date().toLocaleString('id-ID')
         };
         notesData.unshift(newNote);

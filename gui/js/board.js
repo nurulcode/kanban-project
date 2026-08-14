@@ -150,12 +150,26 @@ function createCardElement(note) {
   const canMoveUp = noteIndexInCol > 0;
   const canMoveDown = noteIndexInCol < sameColNotes.length - 1;
 
+  let dateBadgeHtml = '';
+  if (note.startDate || note.dueDate) {
+    let dateText = '';
+    if (note.startDate && note.dueDate) {
+      dateText = `${formatDisplayDate(note.startDate)} - ${formatDisplayDate(note.dueDate)}`;
+    } else if (note.dueDate) {
+      dateText = `Deadline: ${formatDisplayDate(note.dueDate)}`;
+    } else if (note.startDate) {
+      dateText = `Mulai: ${formatDisplayDate(note.startDate)}`;
+    }
+    dateBadgeHtml = `<div class="card-date-badge" style="font-size: 0.72rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px;"><i class="fa-regular fa-calendar-days" style="color: var(--accent-primary);"></i> ${escapeHtml(dateText)}</div>`;
+  }
+
   card.innerHTML = `
     <div class="card-top">
       <h3 class="card-title">${escapeHtml(note.title)}</h3>
       <span class="card-prio ${prioClass}">${escapeHtml(note.priority || 'medium')}</span>
     </div>
     ${note.content ? `<div class="card-content">${escapeHtml(note.content)}</div>` : ''}
+    ${dateBadgeHtml}
     <div class="card-footer">
       <span class="card-tag">${escapeHtml(note.tag || 'Umum')}</span>
       <div class="card-actions">

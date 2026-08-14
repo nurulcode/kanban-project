@@ -12,6 +12,18 @@ function closeModal() {
   noteModal.classList.remove('active');
 }
 
+function formatDisplayDate(dateStr) {
+  if (!dateStr) return '';
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+    return `${day}/${month}/${year}`;
+  }
+  return dateStr;
+}
+
 function openEditModal(noteId) {
   const note = notesData.find(n => n.id === noteId);
   if (!note) return;
@@ -24,6 +36,8 @@ function openEditModal(noteId) {
   document.getElementById('inputColumn').value = note.column;
   document.getElementById('inputPriority').value = note.priority || 'medium';
   document.getElementById('inputTag').value = note.tag || '';
+  document.getElementById('inputStartDate').value = note.startDate || '';
+  document.getElementById('inputDueDate').value = note.dueDate || '';
 
   openModal();
 }
@@ -148,7 +162,13 @@ window.openDetailModal = function(noteId) {
   prioEl.textContent = (note.priority || 'medium').toUpperCase();
   prioEl.className = `card-prio prio-${note.priority || 'medium'}`;
   document.getElementById('detailTag').textContent = `#${note.tag || 'Umum'}`;
-  document.getElementById('detailDate').textContent = note.createdAt ? `Dibuat: ${note.createdAt}` : '';
+  const dateParts = [];
+  if (note.startDate) dateParts.push(`🗓️ Mulai: ${formatDisplayDate(note.startDate)}`);
+  if (note.dueDate) dateParts.push(`🎯 Selesai: ${formatDisplayDate(note.dueDate)}`);
+  if (dateParts.length === 0 && note.createdAt) {
+    dateParts.push(`Dibuat: ${note.createdAt}`);
+  }
+  document.getElementById('detailDate').textContent = dateParts.join(' • ');
   
   const contentEl = document.getElementById('detailContent');
   contentEl.textContent = note.content || '(Tidak ada detail isi catatan)';
