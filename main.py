@@ -108,6 +108,18 @@ class KanbanAppWindow(BaseWindow):
 
         self.add(self.webview)
 
+        # Allow Notification Permission requests in WebKit GTK
+        def on_permission_request(webview, request):
+            if hasattr(WebKit2, 'NotificationPermissionRequest') and isinstance(request, WebKit2.NotificationPermissionRequest):
+                request.allow()
+                return True
+            elif hasattr(request, 'allow'):
+                request.allow()
+                return True
+            return False
+
+        self.webview.connect("permission-request", on_permission_request)
+
         # Auto-retry on load failure (e.g. temporary socket delay)
         def on_load_failed(webview, load_event, failing_uri, error):
             print(f"⚠️ WebKit load failed for {failing_uri}: {error}. Retrying in 200ms...")
@@ -127,9 +139,12 @@ def find_free_port():
         s.bind(('127.0.0.1', 0))
         return s.getsockname()[1]
 
+http_server = None
+
 def start_backend_server(port):
-    server = HTTPServer(('127.0.0.1', port), KanbanRequestHandler)
-    server.serve_forever()
+    global http_server
+    http_server = HTTPServer(('127.0.0.1', port), KanbanRequestHandler)
+    http_server.serve_forever()
 
 def wait_for_server(port, timeout=3.0):
     start_time = time.time()
@@ -156,6 +171,8 @@ def main():
 
     if HAS_GTK:
         app_win = KanbanAppWindow(port)
+        if http_server:
+            http_server.app_window = app_win
         app_win.show_all()
         Gtk.main()
     else:

@@ -195,6 +195,56 @@ class KanbanRequestHandler(SimpleHTTPRequestHandler):
                 self.send_response(400)
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+        elif self.path == "/api/notify":
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                payload = json.loads(post_data.decode("utf-8"))
+                title = payload.get("title", "Kanban Notes")
+                body = payload.get("body", "")
+                
+                # Native Linux desktop notification via notify-send
+                sent = False
+                try:
+                    subprocess.Popen([
+                        "notify-send", 
+                        "-u", "normal", 
+                        "-i", "dialog-information", 
+                        "-a", "Kanban Notes",
+                        title, 
+                        body
+                    ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    sent = True
+                except FileNotFoundError:
+                    pass
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": sent}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+        elif self.path == "/api/focus_window":
+            try:
+                app_win = getattr(self.server, 'app_window', None)
+                if app_win and hasattr(app_win, 'present'):
+                    try:
+                        from gi.repository import GLib
+                        GLib.idle_add(app_win.present)
+                    except Exception:
+                        pass
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": True}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
         elif self.path == "/api/play_sound":
             # Play native Linux system alert sound
             try:
