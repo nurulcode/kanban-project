@@ -1,7 +1,7 @@
 // Ruang Kerja (Multi-Workspace Management)
 
 let wsPageIndex = 0;
-const WS_PER_PAGE = 4;
+const WS_PER_PAGE = 8;
 let wsSearchQuery = '';
 
 function updateWorkspaceSelectUI() {

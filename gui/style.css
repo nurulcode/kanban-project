@@ -234,6 +234,20 @@
   color: #111827 !important;
 }
 
+/* Light Theme Overrides for Pomodoro Alert Modal */
+[data-theme="light"] .pomo-alert-card h3,
+[data-theme="light"] #pomoAlertTitle {
+  color: #111827 !important;
+}
+
+[data-theme="light"] .pomo-alert-msg {
+  color: #374151 !important;
+}
+
+[data-theme="light"] .pomo-alert-icon {
+  color: #d97706 !important;
+}
+
 /* Light Theme Overrides for Pomodoro History & Stats Modal */
 [data-theme="light"] .pomo-stat-card.pomo-stat-focus {
   background: #fef3c7 !important;
@@ -394,7 +408,7 @@ body {
   white-space: nowrap !important;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 140px;
+  max-width: 240px;
 }
 
 /* Header More Menu Dropdown */
@@ -748,6 +762,38 @@ select option {
   margin-bottom: 8px;
 }
 
+.pomo-date-group {
+  margin-bottom: 12px;
+}
+
+.pomo-date-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #61afef;
+  background: rgba(97, 175, 239, 0.1);
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  border-left: 3px solid #61afef;
+}
+
+.pomo-date-summary {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+}
+
+[data-theme="light"] .pomo-date-header {
+  background: #e2e8f0 !important;
+  color: #1d4ed8 !important;
+  border-left-color: #2563eb !important;
+}
+
 .pomo-history-item {
   display: flex;
   justify-content: space-between;
@@ -827,7 +873,7 @@ select option {
 
 .pomo-alert-msg {
   font-size: 0.9rem;
-  color: #e2e8f0;
+  color: var(--text-main);
   margin-bottom: 20px;
   line-height: 1.5;
 }
@@ -1132,10 +1178,10 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 .modal-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  width: 90%;
-  max-width: 440px;
-  padding: 20px;
+  border-radius: var(--radius-lg);
+  width: 92%;
+  max-width: 580px;
+  padding: 24px 28px;
   box-shadow: var(--shadow-lg);
   transform: scale(0.96);
   transition: transform 0.2s ease;
@@ -1149,12 +1195,14 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: var(--text-main);
 }
 
@@ -1181,14 +1229,18 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin-bottom: 12px;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .form-group label {
-  font-size: 0.78rem;
-  color: #cbd5e1;
-  font-weight: 500;
+  font-size: 0.81rem;
+  color: var(--text-main);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .form-group input,
@@ -1197,9 +1249,10 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
   border: 1px solid #3e4451;
   color: #ffffff !important;
   font-weight: 500;
-  padding: 8px 10px;
-  border-radius: 4px;
-  font-size: 0.85rem;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 0.86rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .form-group select {
@@ -1214,10 +1267,11 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
   border: 1px solid #3e4451 !important;
   color: #ffffff !important;
   font-weight: 500;
-  padding: 8px 28px 8px 10px;
-  border-radius: 4px;
-  font-size: 0.85rem;
+  padding: 9px 28px 9px 12px;
+  border-radius: 6px;
+  font-size: 0.86rem;
   cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .form-group input::placeholder,
@@ -1267,14 +1321,21 @@ body.focus-mode-active .kanban-column[data-column="in_progress"] {
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 16px;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-actions .btn {
+  height: 38px;
+  padding: 0 18px;
+  font-size: 0.86rem;
+  font-weight: 600;
 }
 
 /* Focus Mode Styling & Column Highlight */

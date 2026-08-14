@@ -180,6 +180,18 @@
           </div>
         </div>
 
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputStartDate"><i class="fa-regular fa-calendar"></i> Tanggal Mulai</label>
+            <input type="date" id="inputStartDate">
+          </div>
+
+          <div class="form-group">
+            <label for="inputDueDate"><i class="fa-regular fa-calendar-check"></i> Tanggal Selesai (Deadline)</label>
+            <input type="date" id="inputDueDate">
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="inputTag">Tag / Kategori</label>
           <input type="text" id="inputTag" placeholder="Misal: Pekerjaan, Pribadi, Project">
@@ -221,7 +233,7 @@
   </div>
 
   <!-- Modal Alert Waktu Fokus Selesai -->
-  <div class="modal-overlay" id="pomoAlertModal">
+  <div class="modal-overlay" id="pomoAlertModal" style="z-index: 2100;">
     <div class="modal-card pomo-alert-card">
       <div class="pomo-alert-header">
         <i class="fa-solid fa-bell pomo-alert-icon"></i>
@@ -246,15 +258,15 @@
       <div style="padding: 10px 0;">
         <div style="display: flex; gap: 10px; margin-bottom: 14px;">
           <div class="pomo-stat-card pomo-stat-focus">
-            <div class="pomo-stat-label">TOTAL FOKUS</div>
+            <div class="pomo-stat-label">FOKUS HARI INI</div>
             <div id="modalTotalFocusText" class="pomo-stat-value">0m</div>
           </div>
           <div class="pomo-stat-card pomo-stat-break">
-            <div class="pomo-stat-label">TOTAL ISTIRAHAT</div>
+            <div class="pomo-stat-label">ISTIRAHAT HARI INI</div>
             <div id="modalTotalBreakText" class="pomo-stat-value">0m</div>
           </div>
           <div class="pomo-stat-card pomo-stat-session">
-            <div class="pomo-stat-label">SESI SELESAI</div>
+            <div class="pomo-stat-label">SESI HARI INI</div>
             <div id="modalTotalSessionsText" class="pomo-stat-value">0</div>
           </div>
         </div>
@@ -307,7 +319,7 @@
 
   <!-- Modal Workspace Manager -->
   <div class="modal-overlay" id="modalWorkspace">
-    <div class="modal-card" style="max-width: 500px;">
+    <div class="modal-card" style="max-width: 620px;">
       <div class="modal-header">
         <h3><i class="fa-solid fa-folder-open"></i> Kelola Ruang Kerja</h3>
         <button class="modal-close" id="btnCloseWorkspaceModal" title="Tutup">&times;</button>
@@ -318,13 +330,13 @@
         <!-- Header & Search for Workspace List -->
         <div style="display: flex; flex-direction: column; gap: 10px;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">Daftar Ruang Kerja</span>
+            <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-main);">Daftar Ruang Kerja</span>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 0.78rem; color: var(--text-muted);" id="workspaceCountText">1 Ruang Kerja</span>
+              <span style="font-size: 0.8rem; color: var(--text-muted);" id="workspaceCountText">1 Ruang Kerja</span>
               <div style="display: flex; gap: 4px;">
-                <button id="btnWsPrevPage" class="btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;"
+                <button id="btnWsPrevPage" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.78rem;"
                   title="Sebelumnya"><i class="fa-solid fa-chevron-left"></i></button>
-                <button id="btnWsNextPage" class="btn btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;"
+                <button id="btnWsNextPage" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.78rem;"
                   title="Selanjutnya"><i class="fa-solid fa-chevron-right"></i></button>
               </div>
             </div>
@@ -333,13 +345,13 @@
           <!-- Search Workspace Box -->
           <div class="search-box" style="width: 100%;">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="inputSearchWorkspace" placeholder="Cari ruang kerja..."
-              style="width: 100%; height: 34px; font-size: 0.83rem;" />
+            <input type="text" id="inputSearchWorkspace" placeholder="Cari nama ruang kerja..."
+              style="width: 100%; height: 38px; font-size: 0.88rem;" />
           </div>
 
           <!-- Dynamic Workspace List Container -->
           <div id="workspaceListContainer"
-            style="display: flex; flex-direction: column; gap: 8px; min-height: 110px; max-height: 210px; overflow-y: auto; padding-right: 4px;">
+            style="display: flex; flex-direction: column; gap: 8px; min-height: 220px; max-height: 350px; overflow-y: auto; padding-right: 4px;">
             <!-- Dynamic items rendered by JS -->
           </div>
         </div>
@@ -431,6 +443,10 @@
   <script src="js/modal.js"></script>
   <script src="js/board.js"></script>
   <script src="js/workspace.js"></script>
+  <script src="js/pomodoro-stats.js"></script>
+  <script src="js/pomodoro-audio.js"></script>
+  <script src="js/pomodoro-ui.js"></script>
+  <script src="js/pomodoro-timer.js"></script>
   <script src="js/pomodoro.js"></script>
   <script src="js/theme.js"></script>
   <script src="app.js"></script>
